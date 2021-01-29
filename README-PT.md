@@ -24,6 +24,15 @@ Traduza seu app facílmente e puramente em Flutter usando getters. Sem necessida
 
 # Comece
 
+Adicione o pacote em `pubspec.yaml`:
+
+```yaml
+dependencies:
+  get_localization: 2.0.0
+```
+
+E execute `flutter pub get` no terminal
+
 ## Crie sua classe BaseLocalization e os getters de tradução
 
 Não esqueça de fazer a classe `abstract` (abstrata).

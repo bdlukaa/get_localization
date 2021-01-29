@@ -24,6 +24,15 @@ English | [Português](README-PT.md)
 
 # Get started
 
+Add the package to your `pubspec.yaml`:
+
+```yaml
+dependencies:
+  get_localization: 2.0.0
+```
+
+And run `flutter pub get` in the terminal
+
 ## Create your BaseLocalization class and the translation getters
 
 Don't forget to make it `abstract`, otherwise dart-analyzer won't tell you if a translation is missing.
