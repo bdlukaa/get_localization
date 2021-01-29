@@ -3,6 +3,8 @@ import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 
+import 'extensions.dart';
+
 abstract class Localization {
   static Localization _currentLocalization;
 
@@ -56,6 +58,8 @@ abstract class Localization {
   /// being preferred over higher-indexed ones. The first element is the primary [locale].
   static List<Locale> get systemLocales => window.locales;
 
+  /// Get the localization based on the code. If there's more than one, it defaults
+  /// to the first one
   static Localization getByCode(String code) => localizations.getByCode(code);
 
   /// Get a localization based on `code` and `country`.
@@ -67,14 +71,17 @@ abstract class Localization {
   }) =>
       getByLocale(Locale(code, country?.toUpperCase()));
 
-  /// Get a localization that is equivalent to `locale`
+  /// Get a localization that is equivalent to `locale`. If country is missing
+  /// get the localization based on the code, otherwise get
   static Localization getByLocale(Locale locale) {
     if (locale.countryCode == null) {
       return getByCode(locale.languageCode);
     } else {
-      return get(
-        code: locale.languageCode,
-        country: locale.countryCode,
+      final code = locale.languageCode;
+      final country = locale.countryCode;
+      return localizations.firstWhere(
+        (loc) => loc.code == code && loc.country == country,
+        orElse: () => null,
       );
     }
   }
@@ -99,25 +106,25 @@ abstract class Localization {
     @required this.code,
     this.name,
     this.country,
-  });
+  }) : assert(code != null, 'You must specify a language code');
 
-  String get fullName {
+  /// Get the full code of this localization. `name` is not included
+  /// in this. Code can not be null.
+  ///
+  /// Usually used with the Intl package. Learn how to use it [here]()
+  String get fullCode {
     String name = code;
-    if (country != null) name += '_$country';
+    if (country != null) name += '_${country.toUpperCase()}';
     return name;
   }
 
-  /// Transform `this` into a `Locale`
+  /// Transform `this` into a `Locale`.
   Locale toLocale() => Locale(code, country?.toUpperCase());
 
   /// Get the current localizations based on the current context.
-  /// If null, defaults to `currentLocalization`
+  /// If null, defaults to `currentLocalization`.
   static Localization of(BuildContext context) {
-    final localization = getByLocale(
-      Localizations.localeOf(context, nullOk: true),
-    );
-    if (localization != null) return localization;
-    return currentLocalization;
+    return getByLocale(context.locale) ?? currentLocalization;
   }
 
   /// Initialize the localization.
@@ -126,24 +133,4 @@ abstract class Localization {
       _onLocaleChanged.add(currentLocalization);
     };
   }
-}
-
-extension localizationList on List<Localization> {
-  /// Transforms a List of `Localization`s into a List of `Locale`s.
-  ///
-  /// Usually used on `MaterialApp`'s `supportedLocales`:
-  /// ```dart
-  /// return MaterialApp(
-  ///   title: loc.appName,
-  ///   // Add this line so the platform knows the supported languages
-  ///   supportedLocales: Localization.localizations.toLocaleList(),
-  ///   theme: ...,
-  ///   home: Home(),
-  /// );
-  /// ```
-  List<Locale> toLocaleList() => map((e) => e.toLocale()).toList();
-
-  /// Get the first localization based on `code`
-  Localization getByCode(String code) =>
-      firstWhere((e) => e.code == code, orElse: () => null);
 }

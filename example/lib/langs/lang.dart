@@ -37,7 +37,7 @@ class SpanishLocalization extends BaseLocalization {
 }
 
 class FrenchLocalization extends BaseLocalization {
-  FrenchLocalization() : super(code: 'es', name: 'Français');
+  FrenchLocalization() : super(code: 'fr', name: 'Français');
 
   String get appName => 'Exemple d\'application';
 }

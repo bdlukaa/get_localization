@@ -1,3 +1,14 @@
-## [1.0.0] - 28/01/2021.
+## [2.0.0] - 29/01/2021
 
-* Initial release
+- **NEW**:
+  - **HIGHLIGHT**: `BuildContext` Extensions:
+    1. `context.localization`
+    2. `context.locale`
+  - **HIGHLIGHT**: `LocalizationProviderMixin` mixin
+  - [README portuguese translation](README-PT.md/)
+- Improved documentation
+- Documentation on how to use intl
+
+## [1.0.0] - Initial release - 28/01/2021.
+
+- Implementation for `BaseLocalization`

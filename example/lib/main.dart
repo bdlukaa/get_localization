@@ -44,20 +44,20 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-class Home extends StatelessWidget {
+class Home extends StatelessWidget with LocalizationProviderMixin {
   const Home({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    BaseLocalization loc = Localization.currentLocalization;
+    BaseLocalization loc = currentLocalization;
     return Scaffold(
       appBar: AppBar(title: Text(loc.appName)),
       body: Column(
-        children: List.generate(Localization.localizations.length, (index) {
-          final localization = Localization.localizations[index];
+        children: List.generate(localizations.length, (index) {
+          final localization = localizations[index];
           return CheckboxListTile(
             /// Update the current localization
-            onChanged: (_) => Localization.currentLocalization = localization,
+            onChanged: (_) => currentLocalization = localization,
             value: loc == localization,
             title: Text(localization.name),
             subtitle: Text(localization.code),

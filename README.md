@@ -20,11 +20,13 @@
 
 Localize your app easily entirely in flutter using dart getters. No need for code generation.
 
+English | [Português](README-PT.md)
+
 # Get started
 
 ## Create your BaseLocalization class and the translation getters
 
-Don't forget to make it `abstract`.
+Don't forget to make it `abstract`, otherwise dart-analyzer won't tell you if a translation is missing.
 
 ```dart
 abstract class BaseLocalization extends Localization {
@@ -41,18 +43,21 @@ abstract class BaseLocalization extends Localization {
   // Add your getters down here:
 
   String get appName;
+  String age(int age);
 }
 
 class EnglishLocalization extends BaseLocalization {
   EnglishLocalization() : super(code: 'en', name: 'English');
 
   String get appName => 'Example App';
+  String age(int age) => 'Your age is $age';
 }
 
 class PortugueseLocalization extends BaseLocalization {
   PortugueseLocalization() : super(code: 'pt', name: 'Português');
 
   String get appName => 'App de Exemplo';
+  String age(int age) => 'Sua idade é de $age';
 }
 ```
 
@@ -65,12 +70,13 @@ See [example](example/lib/langs/lang.dart) to a full example
 void main() {
   // Initialize the localization system. It's not necessary, but
   // if you want to get notified about the system language as soon
-  // as changes, you need to call this method
+  // as it changes, you need to call this method
   Localization.init();
   // Add your localizations. You can add them at runtime, but it's
   // recommended to add it here, since it'll be called only once
   Localization.localizations
-    ..add(yourLocalization);
+    ..add(yourLocalization)
+    ..add(otherLocalization);
   runApp(MyApp());
 }
 ```
@@ -131,3 +137,112 @@ class _MyAppState extends State<MyApp> {
 ```
 
 You can see a full-working app at [example](example/)
+
+## Using Intl
+
+Intl is a package that provides internationalization and localization facilities, including message translation, plurals and genders, date/number formatting and parsing, and bidirectional text.
+
+### Install and import the package
+
+In your `pubspec.yaml`, add `intl` to the dependencies:
+
+```yaml
+dependencies:
+  get_localization: <latest-version>
+  intl: <latest-version>
+```
+
+And import it:
+
+```dart
+import 'package:intl/intl.dart';
+```
+
+### Using in BaseLocalization
+
+```dart
+class EnglishLocalization extends BaseLocalization {
+  EnglishLocalization() : super(code: 'en', name: 'English');
+
+  String coins(int amount) {
+    /// Get the current language code. You can use this in almost all
+    /// the methods in Intl
+    final f = NumberFormat('###.0#', Localization.fullCode);
+    return Intl.plural(
+      amount,
+      zero: 'You have no coins',
+      one: 'You have 1 coin',
+      other: 'You have ${f.format(amount)} coins',
+    );
+  }
+}
+```
+
+[Learn more](https://pub.dev/packages/intl):
+
+- [Handling plural and genders](https://pub.dev/packages/intl#messages)
+- [Formating numbers](https://pub.dev/packages/intl#number-formatting-and-parsing)
+- [Formating dates](https://pub.dev/packages/intl#date-formatting-and-parsing)
+
+## Using `LocalizationProviderMixin`
+
+You can use the localization provider mixin on your classes to access `Localization` methods right in.
+
+### Add to a class
+
+```dart
+class Home extends StatelessWidget with LocalizationProviderMixin {
+  const Home({Key key}) : super(key: key);
+
+  ...
+}
+```
+
+### Use the methods
+
+Includes all the common methods:
+
+- currentLocalization (getter and setter)
+- localizations
+- onLocaleChanged
+
+```dart
+  ...
+
+  @override
+  Widget build(BuildContext context) {
+    BaseLocalization loc = currentLocalization;
+    return Scaffold(
+      appBar: AppBar(title: Text(loc.appName)),
+      body: Column(
+        children: List.generate(localizations.length, (index) {
+          final localization = localizations[index];
+          return CheckboxListTile(
+            /// Update the current localization
+            onChanged: (_) => currentLocalization = localization,
+            value: loc == localization,
+            title: Text(localization.name),
+            subtitle: Text(localization.code),
+          );
+        }),
+      ),
+    );
+  }
+
+  ...
+```
+
+## Folder structure
+
+When your localization gets bigger, you may want to split them into different files. Usually:
+
+```folder
+lib (folder that contains all the files)
+  lang (folder that contains all the language files)
+    lang.dart (Where your BaseLocalization will be at)
+    langs (folder that contains all the translations)
+      en.dart (code_COUNTRY.dart)
+      pt.dart
+      es.dart
+      ...
+```
