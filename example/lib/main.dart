@@ -22,6 +22,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+
     /// Listen to the change events and update the whole app.
     Localization.onLocaleChanged.listen((event) => setState(() {}));
   }
@@ -31,6 +32,7 @@ class _MyAppState extends State<MyApp> {
     BaseLocalization loc = Localization.currentLocalization;
     return MaterialApp(
       title: loc.appName,
+
       /// Add this line so the platform knows the supported languages
       supportedLocales: Localization.localizations.toLocaleList(),
       theme: ThemeData(

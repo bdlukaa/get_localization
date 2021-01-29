@@ -1,7 +1,7 @@
 name: get_localization
 description: Localize your app easily entirely in flutter using dart getters. No need for code generation.
 version: 1.0.0
-homepage:
+homepage: https://github.com/bdlukaa/get_localization
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
