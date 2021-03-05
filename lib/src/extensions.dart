@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/widgets.dart';
 import 'base_localization.dart';
 
@@ -17,8 +18,8 @@ extension localizationList on List<Localization> {
   List<Locale> toLocaleList() => map((e) => e.toLocale()).toList();
 
   /// Get the first localization based on `code`
-  Localization getByCode(String code) =>
-      firstWhere((e) => e.code == code, orElse: () => null);
+  Localization? getByCode(String code) =>
+      firstWhereOrNull((e) => e.code == code);
 }
 
 extension contextExtension on BuildContext {
@@ -28,5 +29,5 @@ extension contextExtension on BuildContext {
 
   /// Get the current locale based on this context. The same as
   /// `Localizations.localeOf(this)`
-  Locale get locale => Localizations.localeOf(this, nullOk: true);
+  Locale get locale => Localizations.localeOf(this);
 }

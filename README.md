@@ -4,7 +4,7 @@
     <a title="Pub" href="https://pub.dartlang.org/packages/get_localization" >
       <img src="https://img.shields.io/pub/v/get_localization.svg?style=popout&include_prereleases" />
     </a>
-    <a title="Github">
+    <a title="License">
       <img src="https://img.shields.io/github/license/bdlukaa/get_localization" />
     </a>
     <a title="PRs are welcome">

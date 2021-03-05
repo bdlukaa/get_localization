@@ -29,7 +29,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    BaseLocalization loc = Localization.currentLocalization;
+    BaseLocalization loc = Localization.currentLocalization as BaseLocalization;
     return MaterialApp(
       title: loc.appName,
 
@@ -45,11 +45,11 @@ class _MyAppState extends State<MyApp> {
 }
 
 class Home extends StatelessWidget with LocalizationProviderMixin {
-  const Home({Key key}) : super(key: key);
+  const Home({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    BaseLocalization loc = currentLocalization;
+    BaseLocalization loc = currentLocalization as BaseLocalization;
     return Scaffold(
       appBar: AppBar(title: Text(loc.appName)),
       body: Column(
@@ -59,7 +59,7 @@ class Home extends StatelessWidget with LocalizationProviderMixin {
             /// Update the current localization
             onChanged: (_) => currentLocalization = localization,
             value: loc == localization,
-            title: Text(localization.name),
+            title: Text(localization.name!),
             subtitle: Text(localization.code),
           );
         }),
