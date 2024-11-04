@@ -18,6 +18,15 @@
   </p>
 </div>
 
+# ⚠️ Deprecated
+
+The project is now archived.
+
+1. I don't have time to maintain this.
+2. There are other great options, such as the [slang package](https://pub.dev/packages/slang)
+
+---
+
 Localize your app easily entirely in flutter using dart getters. No need for code generation.
 
 English | [Português](README-PT.md)
